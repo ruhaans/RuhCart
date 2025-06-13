@@ -1,0 +1,17 @@
+<ul>
+    <li>
+        <img src="{{product.image.url}}" alt={{product.name}}>
+        <h4>{{product.name}}</h4>
+        <p>₹{{product.price}}</p>
+        <p>
+            Description:
+            {{product.description}}
+        </p>
+        {% if product.stock %}
+        <p>{{product.stock}} available</p>
+        {% else %}
+        <p>This product is out of stock</p>
+        {% endif %}
+    </li>
+</ul>
+<a href="{% url 'product_list' slug=category.slug %}">Back to  {{category.name}}</a>
