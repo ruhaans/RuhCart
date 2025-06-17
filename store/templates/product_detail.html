@@ -1,8 +1,10 @@
+<a href="{% url 'cart_detail' %}">View Cart</a>
 <ul>
     <li>
-        <img src="{{product.image.url}}" alt={{product.name}}>
+        <img src="{{product.image.url}}" alt="{{product.name}}">
         <h4>{{product.name}}</h4>
         <p>₹{{product.price}}</p>
+        <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
         <p>
             Description:
             {{product.description}}

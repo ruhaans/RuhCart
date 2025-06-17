@@ -1,0 +1,23 @@
+<h2>Cart</h2>
+{% if cart_items %}
+<ul>
+    {% for item in cart_items %}
+    <li>
+        <strong>{{ item.product.name }}</strong><br>
+        <form action="{% url 'update_cart_item' item.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{item.quantity}}" min="1">
+            <button type="submit">Update</button>
+        </form>
+        Quantity: {{ item.quantity }}<br>
+        Price: ₹ {{ item.product.price }}<br>
+        Subtotal: ₹{{item.subtotal}}
+        <a href="{% url 'remove_cart_item' item.id %}">Remove</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<p><b>Total: </b> {{total_price}}</p>
+{% else %}
+<h3>No items found in your cart </h3>
+{% endif %}
