@@ -18,6 +18,11 @@
 </ul>
 
 <p><b>Total: </b> {{total_price}}</p>
+
+<form method="post" action="{% url 'place-order' %}">
+    {% csrf_token %}
+    <button type="submit">Place Order</button>
+</form>
 {% else %}
 <h3>No items found in your cart </h3>
 {% endif %}

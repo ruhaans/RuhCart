@@ -1,0 +1,19 @@
+<h2>Welxome to Seller Dashboard</h2>
+<p>Hello, {{requet.user.username}} ! You are logged in as a seller.</p>
+
+<h2>Your Products</h2>
+
+{% if products %}
+<ul>
+    {% for product in products %}
+    <li>
+        <strong>{{ product.name }}</strong> - ₹{{ product.price }}
+        {% if product.available %} ✅ Available {% else %} ❌ Out of Stock{% endif %}
+        <br>Stock: {{ product.stock }}
+        <br><a href="{% url 'edit_product' product.id %}">Edit</a> | <a href="{% url 'delete_product' product.id %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No products found. <a href="{% url 'add_product' %}">Add your first product</a></p>
+{% endif %}

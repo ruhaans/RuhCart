@@ -1,0 +1,24 @@
+<h2>Order Confirmation</h2>
+
+{% if order %}
+  <p>Thank you, <strong>{{ order.user.username }}</strong>!</p>
+  <p>Your order has been placed successfully on <strong>{{ order.created_at|date:"d M, Y H:i" }}</strong>.</p>
+  <p><b>Shipping Address:</b> {{ order.shipping_address }}</p>
+  <p><b>Order Status:</b> {{ order.status }}</p>
+  <h3>Order Summary</h3>
+  <ul>
+    {% for item in order_items %}
+      <li>
+        <strong>{{ item.product.name }}</strong><br>
+        Quantity: {{ item.quantity }}<br>
+        Price per item: ₹{{ item.price }}<br>
+        Subtotal: ₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat }} × {{ item.quantity }} = ₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat|floatformat }} × {{ item.quantity }}
+      </li>
+      <hr>
+    {% endfor %}
+  </ul>
+  <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+  <a href="{% url 'category_list' %}">Continue Shopping</a>
+{% else %}
+  <p>No order found.</p>
+{% endif %}
