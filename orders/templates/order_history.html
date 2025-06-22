@@ -1,27 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h2>Your Order History</h2>
 
 {% if orders %}
-    {% for order in orders %}
-        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
-            <p><strong>Order ID:</strong> {{ order.id }}</p>
-            <p><strong>Placed On:</strong> {{ order.created_at }}</p>
-            <p><strong>Status:</strong> {{ order.status }}</p>
-            <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
-            <p><strong>Total Price:</strong> ₹{{ order.total_price }}</p>
-
-            <h4>Items:</h4>
-            <ul>
-                {% for item in order.orderitem_set.all %}
-                    <li>
-                        {{ item.product.name }} —
-                        Quantity: {{ item.quantity }} —
-                        Price: ₹{{ item.price }} —
-                        Subtotal: ₹{{ item.subtotal }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
+  {% for order in orders %}
+    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+      <p><strong>Order ID:</strong> {{ order.id }}</p>
+      <p><strong>Date:</strong> {{ order.created_at|date:"d M, Y H:i" }}</p>
+      <p><strong>Status:</strong> {{ order.status|title }}</p>
+      <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+      <h4>Items:</h4>
+      <ul>
+        {% for item in order.orderitem_set.all %}
+          <li>
+            <strong>{{ item.product.name }}</strong><br>
+            Quantity: {{ item.quantity }}<br>
+            Price: ₹{{ item.price }}<br>
+            Subtotal: ₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat|floatformat }} × {{ item.quantity }} = ₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat|floatformat|floatformat|floatformat|floatformat|floatformat|add:"0"|floatformat|add:"0"|floatformat|floatformat }}
+          </li>
+        {% endfor %}
+      </ul>
+      <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+    </div>
+  {% endfor %}
 {% else %}
-    <p>You haven’t placed any orders yet.</p>
+  <p>You have no past orders.</p>
 {% endif %}
+
+{% endblock %}

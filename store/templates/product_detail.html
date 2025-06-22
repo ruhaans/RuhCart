@@ -1,19 +1,21 @@
-<a href="{% url 'cart_detail' %}">View Cart</a>
-<ul>
-    <li>
-        <img src="{{product.image.url}}" alt="{{product.name}}">
-        <h4>{{product.name}}</h4>
-        <p>₹{{product.price}}</p>
-        <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
-        <p>
-            Description:
-            {{product.description}}
-        </p>
-        {% if product.stock %}
-        <p>{{product.stock}} available</p>
-        {% else %}
-        <p>This product is out of stock</p>
-        {% endif %}
-    </li>
-</ul>
-<a href="{% url 'product_list' slug=category.slug %}">Back to  {{category.name}}</a>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ product.name }}</h2>
+
+  <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
+  <p><strong>Price:</strong> ₹{{ product.price }}</p>
+  <p><strong>Description:</strong> {{ product.description }}</p>
+
+  {% if product.stock > 0 %}
+    <p><strong>{{ product.stock }} in stock</strong></p>
+    <form action="{% url 'add_to_cart' product.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Add to Cart</button>
+    </form>
+  {% else %}
+    <p style="color: red;">Out of Stock</p>
+  {% endif %}
+
+  <a href="{% url 'product_list' slug=category.slug %}">Back to Products</a>
+{% endblock %}

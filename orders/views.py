@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from cart.models import Cart, CartItem
 from .models import Order, OrderItem
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def place_order(request):
     user= request.user
 

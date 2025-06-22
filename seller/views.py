@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from store.models import Product
 from .forms import ProductForm
+from orders.models import Order, OrderItem
 
 @login_required
 def seller_dashboard(request):
@@ -34,7 +35,7 @@ def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
     if request.user.role != 'seller' or product.seller != request.user:
-        return redirect('category_list')  # or seller_dashboard
+        return redirect('category_list')  
 
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
@@ -58,4 +59,14 @@ def delete_product(request, product_id):
         return redirect('seller_dashboard')
 
     return render (request, 'delete_product.html', {'product': product})
+
+def seller_orders(request):
+    if request.user.role != 'seller':
+        return redirect('seller_dashboard')
     
+    seller_products = Product.objects.filter(seller=request.user)
+    order_items = OrderItem.objects.filter(product__in=seller_products).select_related('product', 'order')
+
+    return render(request, 'seller_orders.html', {'order_items': order_items})
+
+

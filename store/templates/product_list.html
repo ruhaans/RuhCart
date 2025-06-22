@@ -1,18 +1,33 @@
-<h1>Products in {{category.name}}</h1>
-{% if products %}
-<ul>
-    {% for product in products %}
-    <li>
-        <a href="{% url 'product_detail' category_slug=category.slug product_slug=product.slug %}">
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Products in {{ category.name }}</h1>
+
+  {% if page_obj %}
+    <ul>
+      {% for product in page_obj %}
+        <li>
+          <a href="{% url 'product_detail' category_slug=category.slug product_slug=product.slug %}">
             <h3>{{ product.name }}</h3>
-        </a>
-        <a href="{% url 'product_detail' category_slug=category.slug product_slug=product.slug %}">
-            <img src="{{product.image.url}}" alt="product.name" width="150">
-        </a>
-        <p><b>₹{{product.price}}</b></p>
-    </li>
-</ul>
-{% endfor %}
-{% else %}
-<p>No products found in this category </p>
-{% endif %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="150">
+          </a>
+          <p><b>₹{{ product.price }}</b></p>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>No products found in this category.</p>
+  {% endif %}
+{% endblock %}

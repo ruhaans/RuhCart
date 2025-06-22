@@ -1,28 +1,33 @@
-<h2>Cart</h2>
-{% if cart_items %}
-<ul>
-    {% for item in cart_items %}
-    <li>
-        <strong>{{ item.product.name }}</strong><br>
-        <form action="{% url 'update_cart_item' item.id %}" method="post">
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Your Cart</h2>
+
+  {% if cart_items %}
+    <ul>
+      {% for item in cart_items %}
+        <li>
+          <strong>{{ item.product.name }}</strong><br>
+          ₹{{ item.product.price }} × {{ item.quantity }} = ₹{{ item.subtotal }}<br>
+
+          <form action="{% url 'update_cart_item' item.id %}" method="post">
             {% csrf_token %}
-            <input type="number" name="quantity" value="{{item.quantity}}" min="1">
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
             <button type="submit">Update</button>
-        </form>
-        Quantity: {{ item.quantity }}<br>
-        Price: ₹ {{ item.product.price }}<br>
-        Subtotal: ₹{{item.subtotal}}
-        <a href="{% url 'remove_cart_item' item.id %}">Remove</a>
-    </li>
-    {% endfor %}
-</ul>
+          </form>
 
-<p><b>Total: </b> {{total_price}}</p>
+          <form action="{% url 'remove_cart_item' item.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
 
-<form method="post" action="{% url 'place-order' %}">
-    {% csrf_token %}
-    <button type="submit">Place Order</button>
-</form>
-{% else %}
-<h3>No items found in your cart </h3>
-{% endif %}
+    <p><strong>Total:</strong> ₹{{ total_price }}</p>
+    <a href="{% url 'place_order' %}">Proceed to Checkout</a>
+
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+{% endblock %}

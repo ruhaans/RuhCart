@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Orders Received</h2>
+
+{% if order_items %}
+<ul>
+    {% for item in order_items %}
+    <li>
+        <strong>Product:</strong> {{ item.product.name }} (x{{ item.quantity }})<br>
+        <strong>Price:</strong> ₹{{ item.price }}<br>
+        <strong>Status:</strong> {{ item.order.status }}<br>
+        <strong>Buyer Email:</strong> {{ item.order.user.email }}<br>
+        <strong>Order Date:</strong> {{ item.order.created_at|date:"d M, Y H:i" }}
+    </li>
+    <hr>
+    {% endfor %}
+</ul>
+{% else %}
+<h3>No orders received</h3>
+{% endif %}
+{% endblock %}

@@ -15,7 +15,7 @@ def add_to_cart(request, product_id):
             request.session.save()
             session_key= request.session.session_key
     
-        cart, created = Cart.objects.get_or_create(session_key=session_key)
+        cart, created = Cart.objects.get_or_create(session_key=session_key, user=None)
 
     cart_item, created= CartItem.objects.get_or_create(cart=cart, product=product)
     if not created:

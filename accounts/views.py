@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UserProfileForm
+from .models import UserProfile
+from django.contrib.auth.decorators import login_required
 
 def user_login(request):
     if request.method == 'POST':
@@ -30,4 +32,20 @@ def register_user(request):
     else:
             form= CustomUserCreationForm()
     return render (request, 'register.html', {'form': form})
-    
+
+@login_required
+def profile_view(request):
+    user_profile= request.user.user_profile
+
+    return render(request, 'profile.html', {'user_profile':user_profile})
+
+def edit_profile(request):
+    user_profile= request.user.user_profile
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('category_list')
+    else:
+        form= UserProfileForm(instance=user_profile)
+    return render(request, 'edit_profile.html', {'form': form})
