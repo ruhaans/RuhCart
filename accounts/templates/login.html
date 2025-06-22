@@ -1,17 +1,24 @@
-<h2>Login</h2>
-<form method="post" action="{% url 'login' %}">
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="auth-container">
+  <h2>Login</h2>
+  <form method="post">
     {% csrf_token %}
+    <label>Username:</label>
+    <input type="text" name="username" required>
 
-    <label for="username">Username: </label><br>
-    <input type="text" name="username" required><br> <br>
-
-    <label for="password">Password: </label><br>
-    <input type="password" name="password" required><br> <br>
+    <label>Password:</label>
+    <input type="password" name="password" required>
 
     <button type="submit">Login</button>
 
-</form>
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+  </form>
 
-{% if error %}
-  <p style="color:red;">{{ error }}</p>
-{% endif %}
+  <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
+</div>
+
+{% endblock %}

@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<form action="{% url 'search_products' %}" method="GET">
-    <input type="text" name="query" placeholder="Search products...">
-    <button type="submit">Search</button>
-</form>
 
-<h1>Categories</h1>
-<ul>
+<div class="home-container">
+  <h1>Shop by Category</h1>
+
+  <div class="category-grid">
     {% for category in categories %}
-    <li> <a href="{% url 'product_list' slug=category.slug %}">{{category.name}}</a></li>
+      <div class="category-card">
+        <a href="{% url 'product_list' slug=category.slug %}">
+          {% if category.image %}
+            <img src="{{ category.image.url }}" alt="{{ category.name }}">
+          {% else %}
+            <img src="https://via.placeholder.com/150" alt="No Image">
+          {% endif %}
+          <h3>{{ category.name }}</h3>
+        </a>
+      </div>
     {% endfor %}
-</ul>
+  </div>
+</div>
+
 {% endblock %}

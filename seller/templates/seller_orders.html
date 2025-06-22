@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Orders Received</h2>
+<div class="seller-orders">
+  <h2>Orders Received</h2>
 
-{% if order_items %}
-<ul>
+  {% if order_items %}
+  <ul class="order-list">
     {% for item in order_items %}
-    <li>
-        <strong>Product:</strong> {{ item.product.name }} (x{{ item.quantity }})<br>
-        <strong>Price:</strong> ₹{{ item.price }}<br>
-        <strong>Status:</strong> {{ item.order.status }}<br>
-        <strong>Buyer Email:</strong> {{ item.order.user.email }}<br>
-        <strong>Order Date:</strong> {{ item.order.created_at|date:"d M, Y H:i" }}
+    <li class="order-card">
+      <p><strong>Product:</strong> {{ item.product.name }}</p>
+      <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+      <p><strong>Price:</strong> ₹{{ item.price }}</p>
+      <p><strong>Status:</strong> {{ item.order.status|title }}</p>
+      <p><strong>Ordered by:</strong> {{ item.order.user.email }}</p>
+      <p><strong>Order Date:</strong> {{ item.order.created_at|date:"d M Y, H:i" }}</p>
     </li>
-    <hr>
     {% endfor %}
-</ul>
-{% else %}
-<h3>No orders received</h3>
-{% endif %}
+  </ul>
+  {% else %}
+  <p>No orders received yet.</p>
+  {% endif %}
+</div>
 {% endblock %}

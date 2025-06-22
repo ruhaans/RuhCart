@@ -1,8 +1,14 @@
-<h2>Edit Profile</h2>
+{% extends 'base.html' %}
+{% block content %}
 
-<form method="post" enctype="multipart/form-data">
+<div class="edit-profile-container">
+  <h2>Edit Your Profile</h2>
+
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+    <button type="submit" class="submit-btn">Save Changes</button>
+  </form>
+</div>
 
-    <button type="submit">Update Profile</button>
-</form>
+{% endblock %}

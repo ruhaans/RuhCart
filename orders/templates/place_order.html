@@ -1,32 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>Order Confirmation</h2>
+<div class="order-confirmation">
+  <h2>Order Confirmation</h2>
 
-{% if order %}
-  <p>Thank you, <strong>{{ order.user.username }}</strong>!</p>
-  <p>Your order has been placed successfully on <strong>{{ order.created_at|date:"d M, Y H:i" }}</strong>.</p>
-  <p><b>Shipping Address:</b> {{ order.shipping_address }}</p>
-  <p><b>Order Status:</b> {{ order.status }}</p>
+  {% if order %}
+    <p>Thank you, <strong>{{ order.user.username }}</strong>!</p>
+    <p>Your order has been placed on <strong>{{ order.created_at|date:"d M, Y H:i" }}</strong>.</p>
 
-  <h3>Order Summary</h3>
-  <ul>
-    {% for item in order_items %}
-      <li>
-        <strong>{{ item.product.name }}</strong><br>
-        Quantity: {{ item.quantity }}<br>
-        Price per item: ₹{{ item.price }}<br>
-        Subtotal: ₹{{ item.subtotal }}
-      </li>
-      <hr>
-    {% endfor %}
-  </ul>
+    <div class="order-details">
+      <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+      <p><strong>Status:</strong> {{ order.status|title }}</p>
 
-  <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
-  <a href="{% url 'category_list' %}">Continue Shopping</a>
+      <h3>Order Summary</h3>
+      <ul>
+        {% for item in order_items %}
+        <li>
+          <strong>{{ item.product.name }}</strong> x {{ item.quantity }}<br>
+          ₹{{ item.price }} each<br>
+          <b>Subtotal:</b> ₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat }} × {{ item.quantity }} = ₹{{ item.price|floatformat:2|add:"0"|floatformat|floatformat|floatformat|floatformat }}
+        </li>
+        <hr>
+        {% endfor %}
+      </ul>
+      <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+    </div>
 
-{% else %}
-  <p>No order found.</p>
-{% endif %}
+    <a class="continue-shopping" href="{% url 'category_list' %}">🛍️ Continue Shopping</a>
+  {% else %}
+    <p>No order found.</p>
+  {% endif %}
+</div>
 
 {% endblock %}
